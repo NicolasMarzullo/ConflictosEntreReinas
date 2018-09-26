@@ -20,12 +20,12 @@ public class Tablero {
 
 	public int[][] resolverConflictos(){
 		/*Este ejercicio es resuelto con una matriz de N(cant de reinas) filas x 9 columnas
-		 * la primer columna la uso para guardar la cantidad de conflictos de cada reina 
-		 * las otras 8 columnas corresponden a los 8 posibles conflictos que una reina puede
-		 * tener. (Arriba, abajo, izquierda, derecha, diagAribaDer, diagArribaIzq
+		 * la primer columna la uso para guardar (al final de todo) la cantidad de conflictos 
+		 * de cada reina las otras 8 columnas corresponden a los 8 posibles conflictos 
+		 * que una reina puede tener: Arriba, abajo, izquierda, derecha, diagAribaDer, diagArribaIzq
 		 * diagAbajoIzq diagAbajoDer
 		 * 
-		 * Esto es lo que devuelvo para que luego el metodo de ArchivoReina se encargue de imprimirlo
+		 * Dicha matriz es devuelta para su posterior impresión en el .out
 		 * en el .out
 		 */
 		
@@ -33,6 +33,7 @@ public class Tablero {
 		
 		int lugarDeConflicto;
 		int matResultado[][] = new int[this.reinas.size()][9];
+		int vecCantidades[] = new int[this.reinas.size()]; 
 		
 		for(int i=0; i<this.reinas.size();i++) {	//recorro el arraylist
 			reinaActualI = this.reinas.get(i);
@@ -48,7 +49,7 @@ public class Tablero {
 						
 						if(matResultado[i][lugarDeConflicto] == 0) {//aun no hubo ningun conlficto en esa direccion
 							matResultado[i][lugarDeConflicto] = reinaActualJ.getNro(); //guardo la reina con la que hubo conflicto
-							matResultado[i][0] ++;	//cuento el conflicto
+							vecCantidades[i] ++;	//cuento el conflicto
 						}
 						else if(reinaActualJ.estaMasCercaQue(this.reinas.get(matResultado[i][lugarDeConflicto]-1), lugarDeConflicto))
 								matResultado[i][lugarDeConflicto] = reinaActualJ.getNro();
@@ -59,6 +60,13 @@ public class Tablero {
 		}
 		
 		
+		//Primero ordeno las filas y luego pongo las cantidades en la primer columna 
+		for(int i=0; i<this.reinas.size();i++) {
+			Arrays.sort(matResultado[i]);
+			matResultado[i][0] = vecCantidades[i];
+		}
+		
+
 		return matResultado;
 	}
 	
